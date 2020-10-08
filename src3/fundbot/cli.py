@@ -31,7 +31,8 @@ async def pool(message: types.Message):
 
 @dp.message_handler(commands=['version'])
 async def version(message: types.Message):
-    label = subprocess.check_output(["git", "describe"]).strip()
+    label = subprocess.check_output(
+        ["/bin/git", "rev-parse", "--short", "HEAD"]).strip()
     await message.answer(f"{label}")
 
 
