@@ -1,7 +1,7 @@
 import click
 import logging
 import os
-from pathlib import Path
+import subprocess
 
 from aiogram import Bot, Dispatcher, executor, types
 
@@ -29,6 +29,12 @@ async def pool(message: types.Message):
     await message.answer(f"{pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND")
 
 
+@dp.message_handler(commands=['version'])
+async def version(message: types.Message):
+    label = subprocess.check_output(["git", "describe"]).strip()
+    await message.answer(f"{label}")
+
+
 @click.group()
 def main():
     logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
@@ -38,6 +44,13 @@ def main():
 def run():
     log.info(f"Starting Telegram Bot")
     executor.start_polling(dp, skip_updates=True)
+
+
+@main.command()
+def check():
+    log.info(f"Checking queries")
+    pooled_eth, pooled_xfund = uniswap_data()
+
 
 
 if __name__ == "__main__":
