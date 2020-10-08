@@ -5,6 +5,7 @@ from pathlib import Path
 
 from aiogram import Bot, Dispatcher, executor, types
 
+from fundbot.crawl import uniswap_data
 from fundbot.utils import get_secret
 
 log = logging.getLogger(__name__)
@@ -19,17 +20,13 @@ async def send_welcome(message: types.Message):
     """
     This handler will be called when user sends `/start` or `/help` command
     """
-    await message.reply("Hi!\nI'm EchoBot!\nPowered by aiogram.")
+    await message.reply("Hi!\nI only know the /pool command")
 
 
-@dp.message_handler(regexp='(^cat[s]?$|puss)')
-async def cats(message: types.Message):
-    current_script = Path(os.path.abspath(__file__))
-    data_dir = current_script.parent.parent.parent / 'data'
-    target = data_dir / 'brent_rambo.gif'
-    log.info(f"Searching for {target}")
-    with open(target, 'rb') as photo:
-        await message.reply_photo(photo, caption='Gifs do not work')
+@dp.message_handler(commands=['pool'])
+async def pool(message: types.Message):
+    pooled_eth, pooled_xfund = uniswap_data()
+    await message.answer(f"{pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND")
 
 
 @dp.message_handler()
@@ -44,7 +41,7 @@ def main():
 
 @main.command()
 def run():
-    log.info(f"Hello Telegram Bot")
+    log.info(f"Starting Telegram Bot")
     executor.start_polling(dp, skip_updates=True)
 
 
