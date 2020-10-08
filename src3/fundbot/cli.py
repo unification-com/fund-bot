@@ -29,11 +29,6 @@ async def pool(message: types.Message):
     await message.answer(f"{pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND")
 
 
-@dp.message_handler()
-async def echo(message: types.Message):
-    await message.answer(message.text)
-
-
 @click.group()
 def main():
     logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
