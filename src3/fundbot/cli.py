@@ -6,7 +6,7 @@ import subprocess
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ParseMode
 
-from fundbot.coingecko import eth_price
+from fundbot.coingecko import eth_price, fund_price
 from fundbot.crawl import uniswap_data
 from fundbot.etherscan import total_supply
 from fundbot.utils import get_secret
@@ -76,13 +76,19 @@ def render_pool():
     e_price = eth_price()
     supply = total_supply()
     pooled_eth, pooled_xfund, last_price = uniswap_data()
+    usd, usd_market_cap, usd_24h_vol, usd_24h_change = fund_price()
     xfund_usd_price = last_price * e_price
     market_cap = supply * xfund_usd_price
     lines = [
         f"Total supply claimed {supply:,.0f} xFUND",
-        f"Last {last_price:.4f} ETH <b>(${xfund_usd_price:,.0f} USD)</b>",
+        f"xFUND Last {last_price:.4f} ETH <b>(${xfund_usd_price:,.0f} USD)</b>",
         f"Market Cap ${market_cap:,.0f} USD",
-        f"Uniswap Pool: {pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND"
+        f"Uniswap Pool: {pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND",
+        f"",
+        f"FUND Last ${usd:.4f}",
+        f"MarketCap ${usd_market_cap:,.0f}",
+        f"Volume ${usd_24h_vol:,.0f}",
+        f"24h {usd_24h_change:.2f}%",
     ]
     msg = "\n".join(lines)
     return msg
