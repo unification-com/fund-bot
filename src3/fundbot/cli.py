@@ -23,8 +23,14 @@ async def send_welcome(message: types.Message):
     """
     This handler will be called when user sends `/start` or `/help` command
     """
-    attribution = '<a href="https://etherscan.io/apis">Powered by Etherscan.io APIs</a>'
-    await message.reply(f"Hi! I only know the /fund command\n{attribution}, Uniswap APIv2 and Coingecko", parse_mode=ParseMode.HTML)
+    attribution = '<a href="https://etherscan.io/apis">Powered by ' \
+                  'Etherscan.io APIs</a>'
+    lines = [
+        f"Hi! I only know the /fund command yet",
+        f'{attribution}, Uniswap APIv2 and Coingecko'
+    ]
+    msg = "\n".join(lines)
+    await message.reply(msg, parse_mode=ParseMode.HTML)
 
 
 @dp.message_handler(commands=['fund'])
@@ -65,7 +71,7 @@ def render_pool():
     xfund_usd_price = last_price * e_price
     market_cap = supply * xfund_usd_price
     lines = [
-        f"Total supply {supply:,.0f} xFUND, Last {last_price:.4f} ETH "
+        f"Total supply claimed {supply:,.0f} xFUND, Last {last_price:.4f} ETH "
         f"<b>(${xfund_usd_price:,.0f} USD)</b>, Market Cap ${market_cap:,.0f} USD",
         f"Uniswap Pool: {pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND"
     ]
