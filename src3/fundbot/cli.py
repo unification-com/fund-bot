@@ -5,6 +5,11 @@ import subprocess
 
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ParseMode
+from aiogram import Bot, types
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.dispatcher import Dispatcher
+from aiogram.utils.exceptions import Throttled
+from aiogram.utils.executor import start_polling
 
 from fundbot.coingecko import eth_price, fund_price
 from fundbot.crawl import uniswap_data
@@ -15,7 +20,9 @@ log = logging.getLogger(__name__)
 
 token = get_secret('fundbot')
 bot = Bot(token=token)
-dp = Dispatcher(bot)
+
+storage = MemoryStorage()
+dp = Dispatcher(bot, storage=storage)
 
 
 @dp.message_handler(commands=['help'])
@@ -33,18 +40,18 @@ async def send_welcome(message: types.Message):
     await message.reply(msg, parse_mode=ParseMode.HTML)
 
 
-@dp.message_handler(commands=['fund'])
+@dp.message_handler(commands=['fund', 'xfund'])
 async def fund(message: types.Message):
-    log.info(f"/fund called")
-    msg = render_pool()
-    await message.answer(msg, parse_mode=ParseMode.HTML)
-
-
-@dp.message_handler(commands=['xfund'])
-async def xfund(message: types.Message):
-    log.info(f"/xfund called")
-    msg = render_pool()
-    await message.answer(msg, parse_mode=ParseMode.HTML)
+    try:
+        # Execute throttling manager with rate-limit equal to 2 seconds
+        await dp.throttle('start', rate=2)
+    except Throttled:
+        # If request is throttled, the `Throttled` exception will be raised
+        await message.reply('Too many requests!')
+    else:
+        log.info(f"/xfund called")
+        msg = render_pool()
+        await message.answer(msg, parse_mode=ParseMode.HTML)
 
 
 @dp.message_handler(commands=['version'])
