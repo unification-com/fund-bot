@@ -61,10 +61,11 @@ def render_pool():
     e_price = eth_price()
     supply = total_supply()
     pooled_eth, pooled_xfund, last_price = uniswap_data()
-    market_cap = supply * last_price * e_price
+    xfund_usd_price = last_price * e_price
+    market_cap = supply * xfund_usd_price
     lines = [
-        f"Total supply {supply:,.0f} xFUND, Last {last_price:.4f} ETH, "
-        f"Market Cap ${market_cap:,.0f} USD",
+        f"Total supply {supply:,.0f} xFUND, Last {last_price:.4f} ETH "
+        f"(${xfund_usd_price:,.0f} USD), Market Cap ${market_cap:,.0f} USD",
         f"Pool: {pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND"
     ]
     msg = "\n".join(lines)
