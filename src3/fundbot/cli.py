@@ -5,7 +5,9 @@ import subprocess
 
 from aiogram import Bot, Dispatcher, executor, types
 
+from fundbot.coingecko import eth_price
 from fundbot.crawl import uniswap_data
+from fundbot.etherscan import total_supply
 from fundbot.utils import get_secret
 
 log = logging.getLogger(__name__)
@@ -20,13 +22,14 @@ async def send_welcome(message: types.Message):
     """
     This handler will be called when user sends `/start` or `/help` command
     """
-    await message.reply("Hi!\nI only know the /pool command")
+    attribution = '<a href="https://etherscan.io/apis">Powered by Etherscan.io APIs</a>'
+    await message.reply(f"Hi!\nI only know the /pool command\n{attribution}")
 
 
 @dp.message_handler(commands=['pool'])
 async def pool(message: types.Message):
-    pooled_eth, pooled_xfund = uniswap_data()
-    await message.answer(f"{pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND")
+    msg = render_pool()
+    await message.answer(msg)
 
 
 @dp.message_handler(commands=['version'])
@@ -50,8 +53,22 @@ def run():
 @main.command()
 def check():
     log.info(f"Checking queries")
-    pooled_eth, pooled_xfund = uniswap_data()
+    msg = render_pool()
+    print(msg)
 
+
+def render_pool():
+    e_price = eth_price()
+    supply = total_supply()
+    pooled_eth, pooled_xfund, last_price = uniswap_data()
+    market_cap = supply * last_price * e_price
+    lines = [
+        f"Total supply {supply:,.0f} xFUND, Last {last_price:.4f} ETH, "
+        f"Market Cap ${market_cap:,.0f} USD",
+        f"Pool: {pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND"
+    ]
+    msg = "\n".join(lines)
+    return msg
 
 
 if __name__ == "__main__":
