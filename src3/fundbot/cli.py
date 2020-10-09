@@ -4,6 +4,7 @@ import os
 import subprocess
 
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.types import ParseMode
 
 from fundbot.coingecko import eth_price
 from fundbot.crawl import uniswap_data
@@ -23,11 +24,11 @@ async def send_welcome(message: types.Message):
     This handler will be called when user sends `/start` or `/help` command
     """
     attribution = '<a href="https://etherscan.io/apis">Powered by Etherscan.io APIs</a>'
-    await message.reply(f"Hi!\nI only know the /pool command\n{attribution}")
+    await message.reply(f"Hi!... I only know the /fund command\n{attribution}", parse_mode=ParseMode.HTML)
 
 
-@dp.message_handler(commands=['pool'])
-async def pool(message: types.Message):
+@dp.message_handler(commands=['fund'])
+async def fund(message: types.Message):
     msg = render_pool()
     await message.answer(msg)
 
