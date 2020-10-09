@@ -33,7 +33,7 @@ async def send_welcome(message: types.Message):
     await message.reply(msg, parse_mode=ParseMode.HTML)
 
 
-@dp.message_handler(commands=['fund'])
+@dp.message_handler(commands=['fund, xfund'])
 async def fund(message: types.Message):
     log.info(f"/fund called")
     msg = render_pool()
