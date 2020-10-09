@@ -49,7 +49,7 @@ async def version(message: types.Message):
 
 @click.group()
 def main():
-    logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
+    logging.basicConfig(level=os.environ.get("LOGLEVEL", "DEBUG"))
 
 
 @main.command()
