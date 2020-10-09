@@ -26,8 +26,8 @@ async def send_welcome(message: types.Message):
     attribution = '<a href="https://etherscan.io/apis">Powered by ' \
                   'Etherscan.io APIs</a>'
     lines = [
-        f"Hi! I only know the /fund command yet",
-        f'{attribution}, Uniswap APIv2 and Coingecko'
+        f"Hi! I only know the /fund command so far",
+        f'{attribution}, Uniswap APIv2 and CoinGecko'
     ]
     msg = "\n".join(lines)
     await message.reply(msg, parse_mode=ParseMode.HTML)
