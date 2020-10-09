@@ -64,7 +64,8 @@ async def version(message: types.Message):
 
 @click.group()
 def main():
-    logging.basicConfig(level=os.environ.get("LOGLEVEL", "DEBUG"))
+    format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    logging.basicConfig(level=os.environ.get("LOGLEVEL", "DEBUG"), format=format)
 
 
 @main.command()
@@ -82,10 +83,17 @@ def check():
 
 
 async def render_pool():
-    e_price = eth_price()
-    supply = total_supply()
-    pooled_eth, pooled_xfund, last_price = uniswap_data()
-    usd, usd_market_cap, usd_24h_vol, usd_24h_change = fund_price()
+    ret = await asyncio.gather(
+        eth_price(),
+        total_supply(),
+        uniswap_data(),
+        fund_price()
+    )
+    e_price = ret[0]
+    supply = ret[1]
+    pooled_eth, pooled_xfund, last_price = ret[2]
+    usd, usd_market_cap, usd_24h_vol, usd_24h_change = ret[3]
+
     xfund_usd_price = last_price * e_price
     market_cap = supply * xfund_usd_price
     lines = [

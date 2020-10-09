@@ -1,6 +1,6 @@
-from python_graphql_client import GraphqlClient
-
 import logging
+
+from python_graphql_client import GraphqlClient
 
 log = logging.getLogger(__name__)
 
@@ -21,7 +21,8 @@ def calculate_price(swap):
     return price
 
 
-def uniswap_data():
+async def uniswap_data():
+    log.info(f"Fetching Uniswap Data")
     client = GraphqlClient(
         endpoint="https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2")
     query = """
@@ -50,13 +51,14 @@ def uniswap_data():
       }
     """
     variables = {"pairId": XFUND_MARKET}
-    data = client.execute(query=query, variables=variables)
+    data = await client.execute_async(query=query, variables=variables)
     pooled_xfund = data['data']['pair']['reserve0']
     pooled_eth = data['data']['pair']['reserve1']
     swaps = data['data']['swaps']
     last_swap = swaps[0]
     last_price = calculate_price(last_swap)
     log.info(f"Last price {last_price} ETH ")
+    log.info(f"Fetched Uniswap Data")
     return float(pooled_eth), float(pooled_xfund), last_price
 
 
