@@ -1,15 +1,16 @@
+import aiohttp
+import asyncio
+
 import click
 import logging
 import os
 import subprocess
 
-from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types import ParseMode
-from aiogram import Bot, types
+from aiogram import Bot, types, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils.exceptions import Throttled
-from aiogram.utils.executor import start_polling
 
 from fundbot.coingecko import eth_price, fund_price
 from fundbot.crawl import uniswap_data
@@ -49,8 +50,8 @@ async def fund(message: types.Message):
         # If request is throttled, the `Throttled` exception will be raised
         await message.reply('Too many requests!')
     else:
-        log.info(f"/xfund called")
-        msg = render_pool()
+        log.info(f"/fund /xfund called")
+        msg = await render_pool()
         await message.answer(msg, parse_mode=ParseMode.HTML)
 
 
@@ -75,11 +76,12 @@ def run():
 @main.command()
 def check():
     log.info(f"Checking queries")
-    msg = render_pool()
+    loop = asyncio.get_event_loop()
+    msg = loop.run_until_complete(render_pool())
     print(msg)
 
 
-def render_pool():
+async def render_pool():
     e_price = eth_price()
     supply = total_supply()
     pooled_eth, pooled_xfund, last_price = uniswap_data()
