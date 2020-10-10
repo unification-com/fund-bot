@@ -108,7 +108,7 @@ async def render_pool():
 
     lines = [
         f"<b>xFUND</b>",
-        f"Price [USD]: ${xfund_usd_price:,.0f}",
+        f"Price [USD]: ${xfund_usd_price:,.2f}",
         f"Price [ETH]: {last_price:.4f} Ξ",
         f"MarketCap: ${market_cap:,.0f}",
         f"Uniswap Liquidity: ${xfund_uni_liq:,.0f}",
