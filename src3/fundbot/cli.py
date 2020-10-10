@@ -104,7 +104,7 @@ async def render_pool():
     market_cap = supply * xfund_usd_price
     xfund_uni_liq = (pooled_xfund * xfund_usd_price) + (pooled_eth * e_price)
 
-    rando_emoji = emojis.pop(randint(0, len(emojis) - 1))
+    rando_emoji = emojis[randint(0, len(emojis) - 1)]
 
     lines = [
         f"<b>xFUND</b>",
