@@ -107,7 +107,7 @@ async def render_pool():
         f"Price [ETH]: {last_price:.4f} Ξ",
         f"Total supply claimed: {supply:,.0f}",
         f"MarketCap: ${market_cap:,.0f}",
-        f"Uniswap Liqudity: ${xfund_uni_liq:,.0f}",
+        f"Uniswap Liquidity: ${xfund_uni_liq:,.0f}",
         f"Uniswap Pool: {pooled_eth:.2f} Ξ / {pooled_xfund:.2f} xFUND",
         f"",
         f"<b>FUND</b>",
