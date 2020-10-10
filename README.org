@@ -1,0 +1,4 @@
+#+STARTUP: SHOWEVERYTHING
+* Telegram FundBot
+
+Smash the ~/fund~ button.
