@@ -60,7 +60,3 @@ async def uniswap_data():
     log.info(f"Last price {last_price} ETH ")
     log.info(f"Fetched Uniswap Data")
     return float(pooled_eth), float(pooled_xfund), last_price
-
-
-if __name__ == "__main__":
-    uniswap_data()

@@ -1,4 +1,3 @@
-import aiohttp
 import asyncio
 
 import click
@@ -13,7 +12,7 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.utils.exceptions import Throttled
 
 from fundbot.coingecko import eth_price, fund_price
-from fundbot.crawl import uniswap_data
+from fundbot.uniswap import uniswap_data
 from fundbot.etherscan import total_supply
 from fundbot.utils import get_secret
 
