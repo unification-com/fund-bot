@@ -18,8 +18,12 @@ from fundbot.utils import get_secret
 
 log = logging.getLogger(__name__)
 
-token = get_secret('fundbot')
-bot = Bot(token=token)
+secrets = {
+    'fundbot': get_secret('fundbot'),
+    'etherscan': get_secret('etherscan'),
+}
+
+bot = Bot(token=secrets['fundbot'])
 
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
@@ -84,7 +88,7 @@ def check():
 async def render_pool():
     ret = await asyncio.gather(
         eth_price(),
-        total_supply(),
+        total_supply(secrets['etherscan']),
         uniswap_data(),
         fund_price()
     )
@@ -95,6 +99,7 @@ async def render_pool():
 
     xfund_usd_price = last_price * e_price
     market_cap = supply * xfund_usd_price
+
     lines = [
         f"Total supply claimed {supply:,.0f} xFUND",
         f"xFUND Last {last_price:.4f} ETH <b>(${xfund_usd_price:,.0f} USD)</b>",
