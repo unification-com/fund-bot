@@ -37,7 +37,7 @@ async def send_welcome(message: types.Message):
     attribution = '<a href="https://etherscan.io/apis">Powered by ' \
                   'Etherscan.io APIs</a>'
     lines = [
-        f"Hi! I only know the /fund command so far",
+        f"Hi! I only know the /fund and /xfund command so far",
         f'{attribution}, Uniswap APIv2 and CoinGecko'
     ]
     msg = "\n".join(lines)
@@ -99,17 +99,22 @@ async def render_pool():
 
     xfund_usd_price = last_price * e_price
     market_cap = supply * xfund_usd_price
+    xfund_uni_liq = (pooled_xfund * xfund_usd_price) + (pooled_eth * e_price)
 
     lines = [
-        f"Total supply claimed {supply:,.0f} xFUND",
-        f"xFUND Last {last_price:.4f} ETH <b>(${xfund_usd_price:,.0f} USD)</b>",
-        f"MarketCap ${market_cap:,.0f} USD",
-        f"Uniswap Pool: {pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND",
+        f"<b>xFUND</b>",
+        f"Price [USD]: ${xfund_usd_price:,.0f}",
+        f"Price [ETH]: {last_price:.4f} Ξ",
+        f"Total supply claimed: {supply:,.0f}",
+        f"MarketCap: ${market_cap:,.0f}",
+        f"Uniswap Liqudity: ${xfund_uni_liq:,.0f}",
+        f"Uniswap Pool: {pooled_eth:.2f} Ξ / {pooled_xfund:.2f} xFUND",
         f"",
-        f"FUND Last ${usd:.4f}",
-        f"MarketCap ${usd_market_cap:,.0f}",
-        f"Volume ${usd_24h_vol:,.0f}",
-        f"24h {usd_24h_change:.2f}%",
+        f"<b>FUND</b>",
+        f"Price [USD]: ${usd:.4f}",
+        f"MarketCap: ${usd_market_cap:,.0f}",
+        f"Volume: ${usd_24h_vol:,.0f}",
+        f"24h: {usd_24h_change:.2f}%",
         f"",
         f"🌿️"
     ]
