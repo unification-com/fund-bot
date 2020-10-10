@@ -106,10 +106,11 @@ async def render_pool():
         f"MarketCap ${market_cap:,.0f} USD",
         f"Uniswap Pool: {pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND",
         f"",
-        f"FUND Last ${usd:.4f} USD",
-        f"MarketCap ${usd_market_cap:,.0f} USD",
-        f"Volume ${usd_24h_vol:,.0f} USD",
+        f"FUND Last ${usd:.4f}",
+        f"MarketCap ${usd_market_cap:,.0f}",
+        f"Volume ${usd_24h_vol:,.0f}",
         f"24h {usd_24h_change:.2f}%",
+        f"",
         f"🌿️"
     ]
     msg = "\n".join(lines)
