@@ -58,4 +58,4 @@ async def uniswap_data():
     swaps = data['data']['swaps']
     log.info(f"xFUND price {price} ETH ")
     log.info(f"Fetched Uniswap Data")
-    return float(pooled_eth), float(pooled_xfund), price
+    return pooled_eth, pooled_xfund, price
