@@ -103,13 +103,13 @@ async def render_pool():
     lines = [
         f"Total supply claimed {supply:,.0f} xFUND",
         f"xFUND Last {last_price:.4f} ETH <b>(${xfund_usd_price:,.0f} USD)</b>",
-        f"Market Cap ${market_cap:,.0f} USD",
+        f"MarketCap ${market_cap:,.0f} USD",
         f"Uniswap Pool: {pooled_eth:.2f} ETH - {pooled_xfund:.2f} xFUND",
         f"",
-        f"FUND Last ${usd:.4f}",
-        f"MarketCap ${usd_market_cap:,.0f}",
-        f"Volume ${usd_24h_vol:,.0f}",
-        f"24h {usd_24h_change:.2f}%",
+        f"FUND Last ${usd:.4f} USD",
+        f"MarketCap ${usd_market_cap:,.0f} USD",
+        f"Volume ${usd_24h_vol:,.0f} USD",
+        f"24h {usd_24h_change:.2f}% ❄️",
     ]
     msg = "\n".join(lines)
     return msg
