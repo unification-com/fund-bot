@@ -52,11 +52,10 @@ async def uniswap_data():
     """
     variables = {"pairId": XFUND_MARKET}
     data = await client.execute_async(query=query, variables=variables)
-    pooled_xfund = data['data']['pair']['reserve0']
-    pooled_eth = data['data']['pair']['reserve1']
+    pooled_xfund = float(data['data']['pair']['reserve0'])
+    pooled_eth = float(data['data']['pair']['reserve1'])
+    price = pooled_eth / pooled_xfund
     swaps = data['data']['swaps']
-    last_swap = swaps[0]
-    last_price = calculate_price(last_swap)
-    log.info(f"Last price {last_price} ETH ")
+    log.info(f"xFUND price {price} ETH ")
     log.info(f"Fetched Uniswap Data")
-    return float(pooled_eth), float(pooled_xfund), last_price
+    return float(pooled_eth), float(pooled_xfund), price

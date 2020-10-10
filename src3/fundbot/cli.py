@@ -1,4 +1,5 @@
 import asyncio
+from random import randint
 
 import click
 import logging
@@ -17,6 +18,8 @@ from fundbot.etherscan import total_supply
 from fundbot.utils import get_secret
 
 log = logging.getLogger(__name__)
+
+emojis = "🦄️,🌿️,😇,🙃,😁,🤑,🤥,🤮,😎,😈,👻".split(",")
 
 secrets = {
     'fundbot': get_secret('fundbot'),
@@ -101,6 +104,8 @@ async def render_pool():
     market_cap = supply * xfund_usd_price
     xfund_uni_liq = (pooled_xfund * xfund_usd_price) + (pooled_eth * e_price)
 
+    rando_emoji = emojis[randint(0, len(emojis) - 1)]
+
     lines = [
         f"<b>xFUND</b>",
         f"Price [USD]: ${xfund_usd_price:,.0f}",
@@ -116,7 +121,7 @@ async def render_pool():
         f"Volume: ${usd_24h_vol:,.0f}",
         f"24h: {usd_24h_change:.2f}%",
         f"",
-        f"🌿️"
+        f"{rando_emoji}"
     ]
     msg = "\n".join(lines)
     return msg
