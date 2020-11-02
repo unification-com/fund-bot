@@ -19,7 +19,7 @@ from fundbot.utils import get_secret
 
 log = logging.getLogger(__name__)
 
-emojis = "🦄️,🌿️,😇,🙃,😁,🤑,🤥,🤮,😎,😈,👻".split(",")
+emojis = "🦄️,🌿️,😇,🙃,😁,🤑,🤥,🤮,😎,😊,😈,👻,☀️".split(",")
 
 secrets = {
     'fundbot': get_secret('fundbot'),
@@ -120,8 +120,6 @@ async def render_pool():
         f"MarketCap: ${usd_market_cap:,.0f}",
         f"Volume: ${usd_24h_vol:,.0f}",
         f"24h: {usd_24h_change:.2f}%",
-        f"",
-        f"{rando_emoji}"
     ]
     msg = "\n".join(lines)
     return msg
